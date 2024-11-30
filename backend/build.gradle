@@ -1,0 +1,60 @@
+plugins {
+  id 'java'
+  id 'war'
+  id 'io.freefair.lombok' version '8.0.1'
+}
+
+group = 'lab4'
+version = ''
+
+repositories {
+  mavenCentral()
+}
+
+ext {
+  jakartaVersion = '10.0.0'
+  postgresVersion = '42.7.4'
+  hibernateVersion = '6.2.5.Final'
+  favreVersion = '0.9.0'
+  jacksonVersion = '2.14.2'
+}
+
+dependencies {
+  // Jakarta EE API
+  providedCompile "jakarta.platform:jakarta.jakartaee-api:$jakartaVersion"
+
+  // database
+//  runtimeOnly "org.postgresql:postgresql:$postgresVersion"
+  implementation "org.postgresql:postgresql:$postgresVersion"
+  implementation "org.hibernate:hibernate-core:$hibernateVersion"
+  implementation "at.favre.lib:bcrypt:$favreVersion" // BCrypt for Password Hashing
+
+  // JSON
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
+  implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+  implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+  implementation 'com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:2.15.2'
+
+  // Логирование
+  implementation 'org.slf4j:slf4j-api:1.7.30'
+  implementation 'org.slf4j:slf4j-simple:1.7.30'
+
+
+  testImplementation platform('org.junit:junit-bom:5.10.0')
+  testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+  useJUnitPlatform()
+}
+
+war {
+  archiveFileName = 'lab4.war'
+}
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
