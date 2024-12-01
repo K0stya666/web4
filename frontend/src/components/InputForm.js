@@ -33,7 +33,7 @@ const InputForm = () => {
                 r: Number(r)
             };
 
-            axios.post(`${API_URL}/hello-world`, data)
+            axios.post(`${API_URL}/areaCheck`, data)
                 .then(response => {
                     console.log(response.data);
                 })

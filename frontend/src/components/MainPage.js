@@ -2,6 +2,7 @@ import React from 'react';
 import InputForm from "./InputForm";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
+import ResultTable from "./ResultTable";
 
 const MainPage = () => {
 
@@ -16,6 +17,7 @@ const MainPage = () => {
                 variant="contained"
                 color="black"
             >На главную</Button>
+            <ResultTable />
         </div>
     );
 }
