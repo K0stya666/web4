@@ -3,7 +3,7 @@ import axios from "axios";
 import {Autocomplete, Button, Input, TextField} from "@mui/material";
 import PointTable from "./PointTable";
 import {useDispatch} from "react-redux";
-import {addPoint} from "../store/store";
+import {addPoint, clearPoints} from "../store/store";
 
 const xValues = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
 const rValues = ['1', '2', '3', '4', '5'];
@@ -54,6 +54,17 @@ const InputForm = () => {
                 });
         }
     }
+
+    const clear = () => {
+        axios.delete(`${API_URL}/areaCheck/clear`)
+            .then(response => {
+                dispatcher(clearPoints());
+            })
+            .catch(error => {
+                console.error("Ошибка при очистке точек:", error);
+                // alert("Не удалось очистить точки. Попробуйте ещё раз.");
+            });
+     }
 
     return (
         <div>
@@ -120,6 +131,11 @@ const InputForm = () => {
                     type="submit"
                     onClick={submit}
                 >Отправить</Button>
+
+                <Button
+                    type="button"
+                    onClick={clear}
+                >Очистить</Button>
 
             </form>
         </div>

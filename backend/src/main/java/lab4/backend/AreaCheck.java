@@ -51,6 +51,14 @@ public class AreaCheck implements Serializable {
         return points;
     }
 
+    @DELETE
+    @Path("/clear")
+    public void clear() {
+        logger.info("Запрос на очистку точек получен.");
+        points.clear();
+        logger.info("Коллекция точек успешно очищена.");
+    }
+
     private boolean checkHit(double x, double y, double r) {
         return true;
     }
