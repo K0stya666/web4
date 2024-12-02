@@ -3,6 +3,7 @@ import InputForm from "./InputForm";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 import PointTable from "./PointTable";
+import Graph from "./Graph";
 
 const MainPage = () => {
 
@@ -11,6 +12,7 @@ const MainPage = () => {
 
     return (
         <div>
+            <Graph />
             <InputForm />
             <Button
                 onClick={redirect}

@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {Autocomplete, Button, Input, TextField} from "@mui/material";
-import PointTable from "./PointTable";
 import {useDispatch} from "react-redux";
 import {addPoint, clearPoints} from "../store/store";
 
