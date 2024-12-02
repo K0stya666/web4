@@ -16,10 +16,10 @@ export const addPoint = (point) => ({
 export const setRadius = (r) => ({
     type: SET_R,
     payload: r
-})
+});
 export const clearPoints = () => ({
     type: CLEAR_POINTS,
-})
+});
 
 const reducer = (state = init, action) => {
     switch (action.type) {
@@ -28,8 +28,11 @@ const reducer = (state = init, action) => {
         case SET_R: return {...state, r: action.payload};
         default: return state;
     }
-}
+};
 
-const store = createStore(reducer)
+const store = createStore(
+    reducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 export default store;

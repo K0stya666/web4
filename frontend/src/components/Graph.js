@@ -1,9 +1,13 @@
-import React from 'react';
-import {useSelector} from "react-redux";
+import React, {useEffect, useRef} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {addPoint} from "../store/store";
 
 const Graph = () => {
+    const dispatch = useDispatch();
 
-    const radius = useSelector((state) => state.r) * 40;
+    const scale = 40;
+    const radius = useSelector((state) => state.r) * scale;
+    const graph = useRef(null);
 
     const trPoint1 = {x: 250, y: 250};
     const trPoint2 = {x: 250 + radius, y: 250};
@@ -20,9 +24,37 @@ const Graph = () => {
         A ${radius} ${radius} 0 0 0 ${250 - radius} ${250}
     `;
 
+    // document.getElementById('graph').addEventListener('click', (e) => {
+    //     e.preventDefault();
+    //
+    //     const svgX = e.offsetX;
+    //     const svgY = e.offsetY;
+    //
+    //     const x = (svgX - 250) / scale;
+    //     const y = (250 - svgY) / scale;
+    //
+    //     dispatch(addPoint(x, y))
+    // });
+
+    useEffect(() => {
+        const svg = graph.current;
+        svg.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const svgX = e.offsetX;
+            const svgY = e.offsetY;
+
+            const x = (svgX - 250) / scale;
+            const y = (250 - svgY) / scale;
+            const r = radius / scale
+
+            dispatch(addPoint({x, y, r}))
+        })
+    }, []);
+
     return (
         <div>
-            <svg id="graph" xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+            <svg id="graph" ref={graph} xmlns="http://www.w3.org/2000/svg" width="500" height="500">
 
                 <rect
                     x={250}
