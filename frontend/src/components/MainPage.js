@@ -18,7 +18,6 @@ const MainPage = () => {
                 color="black"
             >На главную</Button>
             <PointTable />
-            <PointTable />
         </div>
     );
 }

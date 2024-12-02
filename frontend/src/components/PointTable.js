@@ -3,12 +3,9 @@ import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 
 const PointTable = () => {
-    // const dispatch = useDispatch();
-
-    const points = useSelector((state) => state.points);
-
     // const [points , setPoints] = useState([]);
-    // const API_URL = 'http://localhost:9696/lab4/api';
+    const API_URL = 'http://localhost:9696/lab4/api';
+    const points = useSelector((state) => state.points)
     //
     // useEffect(() => {
     //     getPoints();
@@ -27,31 +24,31 @@ const PointTable = () => {
 
     return (
         <div>
-            {/*<table>*/}
+            <table>
 
-            {/*    <thead>*/}
-            {/*        <tr>*/}
-            {/*            <th>X</th>*/}
-            {/*            <th>Y</th>*/}
-            {/*            <th>R</th>*/}
-            {/*            <th>Результат</th>*/}
-            {/*            <th>Дата</th>*/}
-            {/*        </tr>*/}
-            {/*    </thead>*/}
+                <thead>
+                    <tr>
+                        <th>X</th>
+                        <th>Y</th>
+                        <th>R</th>
+                        <th>Результат</th>
+                        <th>Дата</th>
+                    </tr>
+                </thead>
 
-            {/*    <tbody>*/}
-            {/*        {points.map((point, index) => (*/}
-            {/*            <tr key={index}>*/}
-            {/*                <td>{point.x}</td>*/}
-            {/*                <td>{point.y}</td>*/}
-            {/*                <td>{point.r}</td>*/}
-            {/*                <td>{point.hit ? "Попадание" : "Промах"}</td>*/}
-            {/*                <td>{point.date}</td>*/}
-            {/*            </tr>*/}
-            {/*        ))}*/}
-            {/*    </tbody>*/}
+                <tbody>
+                    {points.map((point, index) => (
+                        <tr key={index}>
+                            <td>{point.x}</td>
+                            <td>{point.y}</td>
+                            <td>{point.r}</td>
+                            {/*<td>{point.hit ? "Попадание" : "Промах"}</td>*/}
+                            {/*<td>{point.date}</td>*/}
+                        </tr>
+                    ))}
+                </tbody>
 
-            {/*</table>*/}
+            </table>
         </div>
     )
 }

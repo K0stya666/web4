@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import axios from "axios";
 import {Autocomplete, Button, Input, TextField} from "@mui/material";
 import PointTable from "./PointTable";
+import {useDispatch} from "react-redux";
+import {addPoint} from "../store/store";
 
 const xValues = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
 const rValues = ['1', '2', '3', '4', '5'];
@@ -11,8 +13,9 @@ const InputForm = () => {
     const [x, setX] = useState(null);
     const [y, setY] = useState('');
     const [r, setR] = useState(null);
-    const [points, setPoints] = useState([]);
+    // const [points, setPoints] = useState([]);
     const [errors, setErrors] = useState({});
+    const dispatcher = useDispatch();
 
     const API_URL = 'http://localhost:9696/lab4/api';
 
@@ -42,7 +45,8 @@ const InputForm = () => {
                     console.log(hui);
                     console.log("Тип данных response.data:", typeof response.data );
 
-                    setPoints([data, ...points]);
+                    // setPoints([data, ...points]);
+                    dispatcher(addPoint(data));
                 })
                 .catch(error => {
                     console.log("Ошибка при отправке данных:", error);
@@ -118,40 +122,6 @@ const InputForm = () => {
                 >Отправить</Button>
 
             </form>
-
-            <table>
-
-                <thead>
-                <tr>
-                    <th>X</th>
-                    <th>Y</th>
-                    <th>R</th>
-                    <th>Результат</th>
-                    <th>Дата</th>
-                </tr>
-                </thead>
-
-                <tbody>
-                {Array.isArray(points) && points.length > 0 ? (
-                    points.map((point, index) => (
-                        <tr key={index}>
-                            <td>{point.x}</td>
-                            <td>{point.y}</td>
-                            <td>{point.r}</td>
-                            {/*<td>{point.hit ? "Попадание" : "Промах"}</td>*/}
-                            {/*<td>{new Date(point.date).toLocaleString()}</td>*/}
-                        </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan="5" style={{ textAlign: "center" }}>
-                            Нет данных для отображения.
-                        </td>
-                    </tr>
-                )}
-                </tbody>
-
-            </table>
         </div>
     )
 }
