@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {Autocomplete, Button, Input, TextField} from "@mui/material";
+import PointTable from "./PointTable";
 
 const xValues = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
 const rValues = ['1', '2', '3', '4', '5'];
@@ -10,6 +11,7 @@ const InputForm = () => {
     const [x, setX] = useState(null);
     const [y, setY] = useState('');
     const [r, setR] = useState(null);
+    const [points, setPoints] = useState([]);
     const [errors, setErrors] = useState({});
 
     const API_URL = 'http://localhost:9696/lab4/api';
@@ -35,7 +37,12 @@ const InputForm = () => {
 
             axios.post(`${API_URL}/areaCheck`, data)
                 .then(response => {
-                    console.log(response.data);
+                    const hui = JSON.stringify(data);
+                    console.log("Данные были отправлены:", data.x, data.y, data.r);
+                    console.log(hui);
+                    console.log("Тип данных response.data:", typeof response.data );
+
+                    setPoints([data, ...points]);
                 })
                 .catch(error => {
                     console.log("Ошибка при отправке данных:", error);
@@ -45,71 +52,107 @@ const InputForm = () => {
     }
 
     return (
-        <form >
+        <div>
+            <form>
 
-            <div style={{ display: "flex"}}>
-                <label htmlFor="x">Изменение X:</label>
-                <Autocomplete
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Выбери значение X"
-                            variant="outlined"
-                            error={!!errors.x}
-                            helperText={errors.x}
-                        />
-                    )}
-                    options={xValues}
-                    onChange={(event, value) => setX(value)}
-                    style={{
-                        width: "20%",
-                        height: "60px"
-                    }}
-                />
-            </div>
+                <div style={{display: "flex"}}>
+                    <label htmlFor="x">Изменение X:</label>
+                    <Autocomplete
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Выбери значение X"
+                                variant="outlined"
+                                error={!!errors.x}
+                                helperText={errors.x}
+                            />
+                        )}
+                        options={xValues}
+                        onChange={(event, value) => setX(value)}
+                        style={{
+                            width: "20%",
+                            height: "60px"
+                        }}
+                    />
+                </div>
 
-            <div>
-                <label htmlFor="y">Изменение Y:</label>
-                <Input
-                    type="number"
-                    step="0.1"
-                    value={y}
-                    onChange={(e) => setY(e.target.value)}
-                    error={!!errors.y}
-                    min="-3"
-                    max="3"
-                    placeholder="Введите значение от -3 до 3"
-                />
-                {errors.y && <p style={{ color: "red" }}>{errors.y}</p>}
-            </div>
+                <div>
+                    <label htmlFor="y">Изменение Y:</label>
+                    <Input
+                        type="number"
+                        step="0.1"
+                        value={y}
+                        onChange={(e) => setY(e.target.value)}
+                        error={!!errors.y}
+                        min="-3"
+                        max="3"
+                        placeholder="Введите значение от -3 до 3"
+                    />
+                    {errors.y && <p style={{color: "red"}}>{errors.y}</p>}
+                </div>
 
-            <div style={{ display: "flex" }}>
-                <label htmlFor="r">Изменение R:</label>
-                <Autocomplete
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Выбери значение R"
-                            variant="outlined"
-                            error={!!errors.r}
-                            helperText={errors.r}
-                        />
-                    )}
-                    options={rValues}
-                    onChange={(event, value) => setR(value)}
-                    style={{
-                        width: "20%",
-                        height: "60px"
-                    }}
-                />
-            </div>
+                <div style={{display: "flex"}}>
+                    <label htmlFor="r">Изменение R:</label>
+                    <Autocomplete
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label="Выбери значение R"
+                                variant="outlined"
+                                error={!!errors.r}
+                                helperText={errors.r}
+                            />
+                        )}
+                        options={rValues}
+                        onChange={(event, value) => setR(value)}
+                        style={{
+                            width: "20%",
+                            height: "60px"
+                        }}
+                    />
+                </div>
 
-            <Button
-                type="submit"
-                onClick={submit}
-            >Отправить</Button>
+                <Button
+                    type="submit"
+                    onClick={submit}
+                >Отправить</Button>
 
-        </form>
+            </form>
+
+            <table>
+
+                <thead>
+                <tr>
+                    <th>X</th>
+                    <th>Y</th>
+                    <th>R</th>
+                    <th>Результат</th>
+                    <th>Дата</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {Array.isArray(points) && points.length > 0 ? (
+                    points.map((point, index) => (
+                        <tr key={index}>
+                            <td>{point.x}</td>
+                            <td>{point.y}</td>
+                            <td>{point.r}</td>
+                            {/*<td>{point.hit ? "Попадание" : "Промах"}</td>*/}
+                            {/*<td>{new Date(point.date).toLocaleString()}</td>*/}
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="5" style={{ textAlign: "center" }}>
+                            Нет данных для отображения.
+                        </td>
+                    </tr>
+                )}
+                </tbody>
+
+            </table>
+        </div>
     )
 }
 

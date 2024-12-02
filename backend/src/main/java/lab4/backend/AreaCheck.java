@@ -45,6 +45,9 @@ public class AreaCheck implements Serializable {
 
     @GET
     public List<Point> getPoints() {
+        for (var point : points) {
+            logger.info(point.toString());
+        }
         return points;
     }
 
