@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import {Autocomplete, Button, Input, TextField} from "@mui/material";
 import {useDispatch} from "react-redux";
-import {addPoint, clearPoints} from "../store/store";
+import {addPoint, clearPoints, setRadius} from "../store/store";
 
 const xValues = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
 const rValues = ['1', '2', '3', '4', '5'];
@@ -118,7 +118,10 @@ const InputForm = () => {
                             />
                         )}
                         options={rValues}
-                        onChange={(event, value) => setR(value)}
+                        onChange={(event, value) => {
+                            setR(value);
+                            dispatcher(setRadius(Number(value)))
+                        }}
                         style={{
                             width: "20%",
                             height: "60px"

@@ -1,10 +1,13 @@
 import React from 'react';
+import {useSelector} from "react-redux";
 
 const Graph = () => {
 
+    const radius = useSelector((state) => state.r) * 40;
+
     const trPoint1 = {x: 250, y: 250};
-    const trPoint2 = {x: 450, y: 250};
-    const trPoint3 = {x: 250, y: 350};
+    const trPoint2 = {x: 250 + radius, y: 250};
+    const trPoint3 = {x: 250, y: 250 + radius / 2};
     const trianglePoints = `
         ${trPoint1.x}, ${trPoint1.y} 
         ${trPoint2.x}, ${trPoint2.y} 
@@ -13,8 +16,8 @@ const Graph = () => {
 
     const circleParams = `
         M ${250} ${250}
-        L ${250} ${50}
-        A ${250} ${250} 0 0 0 ${50} ${250}
+        L ${250} ${250 - radius}
+        A ${radius} ${radius} 0 0 0 ${250 - radius} ${250}
     `;
 
     return (
@@ -23,9 +26,9 @@ const Graph = () => {
 
                 <rect
                     x={250}
-                    y={50}
-                    width={200}
-                    height={200}
+                    y={250 - radius}
+                    width={radius}
+                    height={radius}
                     fill="#122028"
                     fill-opacity={0.6}
                 />
@@ -41,26 +44,6 @@ const Graph = () => {
                     fill="#122028"
                     fill-opacity={0.6}
                 />
-
-
-
-
-                {/*<polygon id="triangle" points="250,250 #{250 - areaCheck.r * 40},250 250,#{250 - areaCheck.r * 40 / 2}"*/}
-                {/*         fill="#122028" fill-opacity="0.6"/>*/}
-                {/*<rect id="rectangle" x="#{250 - areaCheck.r * 20}" y="250" width="#{areaCheck.r * 20}"*/}
-                {/*      height="#{areaCheck.r * 40}" fill="#122028" fill-opacity="0.6"/>*/}
-                {/*<path id="circle" fill="#122028" fill-opacity="0.6" d="*/}
-                {/*                    M 250 250*/}
-                {/*                    L ${250} 250*/}
-                {/*                    A #{40 * areaCheck.r} #{40 * areaCheck.r} 0 0 0 #{250} #{250 - areaCheck.r * 40}"/>*/}
-
-                {/*<ui:repeat value="#{areaCheck.points}" var="point">*/}
-                {/*    <circle r="3"*/}
-                {/*            cx="#{point.x * 40 + 250}"*/}
-                {/*            cy="#{- point.y * 40 + 250}"*/}
-                {/*            fill="#{point.hit ? 'yellow' : 'red'}"/>*/}
-                {/*</ui:repeat>*/}
-
 
                 {/*X line*/}
                 <line x1="0" y1="250" x2="500" y2="250" stroke="#122028"/>
