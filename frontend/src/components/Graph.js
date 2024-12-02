@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addPoint} from "../store/store";
+import {green} from "@mui/material/colors";
 
 const Graph = () => {
     const dispatch = useDispatch();
@@ -8,6 +9,7 @@ const Graph = () => {
     const scale = 40;
     const radius = useSelector((state) => state.r) * scale;
     const graph = useRef(null);
+    const points = useSelector((state) => state.points);
 
     const trPoint1 = {x: 250, y: 250};
     const trPoint2 = {x: 250 + radius, y: 250};
@@ -172,9 +174,16 @@ const Graph = () => {
                 {/*3 on y*/}
                 <text x="256" y="455">-5</text>
                 {/*-3 on y*/}
-                {/*arrows*/}
-                <polygon points="250,0 255,5 245, 5" fill="#000720" stroke="#000720"/>
-                <polygon points="500, 250 495,245 495,255" fill="#000720" stroke="#000720"/>
+
+                {points.map((point, index) => (
+                    <circle
+                        key={index}
+                        cx={250 + point.x * scale}
+                        cy={250 - point.y * scale}
+                        r={2.5}
+                        fill={'green'}
+                    />
+                ))}
             </svg>
         </div>
     );
