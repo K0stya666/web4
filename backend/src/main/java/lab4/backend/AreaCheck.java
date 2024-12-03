@@ -30,7 +30,7 @@ public class AreaCheck implements Serializable {
     }
 
     @POST
-    public void addPoints(DataDTO data) {
+    public void addPoints(Point data) {
         double x = data.getX();
         double y = data.getY();
         double r = data.getR();
