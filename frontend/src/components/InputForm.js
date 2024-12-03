@@ -54,8 +54,9 @@ const InputForm = () => {
         }
     }
 
-    const clear = () => {
-        axios.delete(`${API_URL}/areaCheck/clear`)
+    const clear = (e) => {
+        e.preventDefault();
+        axios.delete(`${API_URL}/clear`)
             .then(response => {
                 dispatcher(clearPoints());
             })

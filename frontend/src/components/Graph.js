@@ -1,8 +1,10 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addPoint} from "../store/store";
+import axios from "axios";
 
 const Graph = () => {
+    const API_URL = 'http://localhost:9696/lab4/api/areaCheck';
     const dispatch = useDispatch();
 
     const scale = 40;
@@ -37,7 +39,24 @@ const Graph = () => {
             const y = (250 - svgY) / scale;
             const r = radius / scale
 
-            dispatch(addPoint({x, y, r}))
+            const data = {
+                x: x,
+                y: y,
+                r: r
+            }
+
+            axios.post(`${API_URL}`, data)
+                .then(response => {
+                    console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
+                    console.log("Тип данных response.data:", response.data );
+                    dispatch(addPoint(response.data));
+                })
+                .catch(error => {
+                    console.log("Ошибка при отправке данных:", error);
+                    console.log(error.data);
+                });
+
+            // dispatch(addPoint({x, y, r}))
         })
     }, []);
 
