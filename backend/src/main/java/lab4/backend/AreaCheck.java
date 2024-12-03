@@ -30,17 +30,19 @@ public class AreaCheck implements Serializable {
     }
 
     @POST
-    public void addPoints(Point data) {
+    public Point addPoints(PointDTO data) {
         double x = data.getX();
         double y = data.getY();
         double r = data.getR();
         boolean hit = checkHit(x, y, r);
         LocalDateTime date = LocalDateTime.now();
+        String strdate = date.toString();
 
-        var point = new Point(x, y, r, hit, date);
+        var point = new Point(x, y, r, hit, strdate);
         points.add(point);
 
-        logger.info("Получены данные: x={}, y={}, r={}", data.getX(), data.getY(), data.getR(), hit);
+        logger.info("Получены данные: x={}, y={}, r={}, hit={}", data.getX(), data.getY(), data.getR(), hit);
+        return point;
     }
 
     @GET

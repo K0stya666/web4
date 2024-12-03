@@ -1,22 +1,25 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {Autocomplete, Button, Input, TextField} from "@mui/material";
-import {useDispatch} from "react-redux";
-import {addPoint, clearPoints, setRadius} from "../store/store";
+import {useDispatch, useSelector} from "react-redux";
+import {addPoint, clearPoints, setR} from "../store/store";
 
 const xValues = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
 const rValues = ['1', '2', '3', '4', '5'];
 
 const InputForm = () => {
 
-    const [x, setX] = useState(null);
-    const [y, setY] = useState('');
-    const [r, setR] = useState(null);
-    // const [points, setPoints] = useState([]);
-    const [errors, setErrors] = useState({});
+    const API_URL = 'http://localhost:9696/lab4/api/areaCheck';
     const dispatcher = useDispatch();
 
-    const API_URL = 'http://localhost:9696/lab4/api';
+    const [errors, setErrors] = useState({});
+    const [x, setX] = useState(null);
+    const [y, setY] = useState('');
+    const r = useSelector((state) => state.r);
+
+    const [points, setPoints] = useState([]);
+
+
 
     const validate = () => {
         const errors = {}
@@ -31,21 +34,18 @@ const InputForm = () => {
         e.preventDefault();
 
         if (validate()) {
+
             const data = {
                 x: Number(x),
                 y: Number(y),
                 r: Number(r)
             };
 
-            axios.post(`${API_URL}/areaCheck`, data)
+            axios.post(`${API_URL}`, data)
                 .then(response => {
-                    const hui = JSON.stringify(data);
-                    console.log("Данные были отправлены:", data.x, data.y, data.r);
-                    console.log(hui);
-                    console.log("Тип данных response.data:", typeof response.data );
-
-                    // setPoints([data, ...points]);
-                    dispatcher(addPoint(data));
+                    console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
+                    console.log("Тип данных response.data:", response.data );
+                    dispatcher(addPoint(response.data));
                 })
                 .catch(error => {
                     console.log("Ошибка при отправке данных:", error);
@@ -119,8 +119,8 @@ const InputForm = () => {
                         )}
                         options={rValues}
                         onChange={(event, value) => {
-                            setR(value);
-                            dispatcher(setRadius(Number(value)))
+                            // setR(value);
+                            dispatcher(setR(Number(value)))
                         }}
                         style={{
                             width: "20%",

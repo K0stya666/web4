@@ -1,5 +1,6 @@
 package lab4.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,9 @@ public class Point {
     private double y;
     private double r;
     private boolean hit;
-    private LocalDateTime date;
+
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private String date;
 
 
 

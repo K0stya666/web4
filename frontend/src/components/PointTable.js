@@ -1,26 +1,8 @@
-import React, {useEffect, useState} from "react";
-import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
+import React from "react";
+import {useSelector} from "react-redux";
 
 const PointTable = () => {
-    // const [points , setPoints] = useState([]);
-    const API_URL = 'http://localhost:9696/lab4/api';
     const points = useSelector((state) => state.points)
-    //
-    // useEffect(() => {
-    //     getPoints();
-    // }, []);
-    //
-    // const getPoints = () => {
-    //     axios.get(`${API_URL}/areaCheck`)
-    //         .then((response) => {
-    //             console.log(response.data);
-    //             setPoints(response.data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Ошибка при получении данных:', error);
-    //         });
-    // };
 
     return (
         <div>
@@ -42,8 +24,8 @@ const PointTable = () => {
                             <td>{point.x}</td>
                             <td>{point.y}</td>
                             <td>{point.r}</td>
-                            {/*<td>{point.hit ? "Попадание" : "Промах"}</td>*/}
-                            {/*<td>{point.date}</td>*/}
+                            <td>{point.hit ? "Попадание" : "Промах"}</td>
+                            <td>{point.date}</td>
                         </tr>
                     ))}
                 </tbody>

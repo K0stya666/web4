@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {addPoint} from "../store/store";
-import {green} from "@mui/material/colors";
 
 const Graph = () => {
     const dispatch = useDispatch();
@@ -25,18 +24,6 @@ const Graph = () => {
         L ${250} ${250 - radius}
         A ${radius} ${radius} 0 0 0 ${250 - radius} ${250}
     `;
-
-    // document.getElementById('graph').addEventListener('click', (e) => {
-    //     e.preventDefault();
-    //
-    //     const svgX = e.offsetX;
-    //     const svgY = e.offsetY;
-    //
-    //     const x = (svgX - 250) / scale;
-    //     const y = (250 - svgY) / scale;
-    //
-    //     dispatch(addPoint(x, y))
-    // });
 
     useEffect(() => {
         const svg = graph.current;
@@ -64,19 +51,19 @@ const Graph = () => {
                     width={radius}
                     height={radius}
                     fill="#122028"
-                    fill-opacity={0.6}
+                    fillOpacity={0.6}
                 />
 
                 <path
                     d={circleParams}
                     fill="#122028"
-                    fill-opacity={0.6}
+                    fillOpacity={0.6}
                 />
 
                 <polygon
                     points={trianglePoints}
                     fill="#122028"
-                    fill-opacity={0.6}
+                    fillOpacity={0.6}
                 />
 
                 {/*X line*/}
