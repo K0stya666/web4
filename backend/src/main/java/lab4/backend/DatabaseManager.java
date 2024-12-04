@@ -1,9 +1,13 @@
 package lab4.backend;
 
 import jakarta.annotation.PreDestroy;
-import jakarta.ejb.Stateless;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import lab4.backend.entities.Point;
+import lombok.NoArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -15,54 +19,24 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
-@Stateless
+@ApplicationScoped
+@NoArgsConstructor
 public class DatabaseManager implements Serializable {
-    Logger logger = LoggerFactory.getLogger(DatabaseManager.class);
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-    private final SessionFactory sessionFactory;
+    @PersistenceContext(unitName = "primary")
+    private EntityManager em;
 
-    public DatabaseManager() {
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure()
-                .build();
-
-        try {
-            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        } catch (Exception e) {
-            StandardServiceRegistryBuilder.destroy(registry);
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
+    @Transactional
     public void addPoint(Point point){
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.persist(point);
-            session.getTransaction().commit();
-        }
+        em.persist(point);
     }
 
     public List<Point> getPoints() {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            TypedQuery<Point> query = session.createQuery("from Point", Point.class);
-            return query.getResultList();
-        }
+        return em.createQuery("select p from Point p", Point.class).getResultList();
     }
 
+    @Transactional
     public void clearTable(){
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            session.createQuery("delete from Point").executeUpdate();
-            session.getTransaction().commit();
-        }
-    }
-
-    @PreDestroy
-    public void close() {
-        sessionFactory.close();
+        em.createQuery("delete from Point").executeUpdate();
     }
 }

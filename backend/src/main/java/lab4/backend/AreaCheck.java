@@ -2,6 +2,7 @@ package lab4.backend;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import lab4.backend.entities.Point;
@@ -24,9 +25,13 @@ public class AreaCheck implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(AreaCheck.class.getName());
     private List<Point> points;
 
+    @Inject
+    private DatabaseManager db;
+
     @PostConstruct
     public void init() {
-        if (points == null) { points = new ArrayList<>(); }
+        if (points == null) points = new ArrayList<>();
+        points = db.getPoints();
     }
 
     @POST
@@ -40,17 +45,10 @@ public class AreaCheck implements Serializable {
 
         var point = new Point(x, y, r, hit, strdate);
         points.add(point);
+        db.addPoint(point);
 
         logger.info("Получены данные: x={}, y={}, r={}, hit={}", data.getX(), data.getY(), data.getR(), hit);
         return point;
-    }
-
-    @GET
-    public List<Point> getPoints() {
-        for (var point : points) {
-            logger.info(point.toString());
-        }
-        return points;
     }
 
     @DELETE
@@ -58,6 +56,7 @@ public class AreaCheck implements Serializable {
     public void clear() {
         logger.info("Запрос на очистку точек получен.");
         points.clear();
+        db.clearTable();
         logger.info("Коллекция точек успешно очищена.");
     }
 
