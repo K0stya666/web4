@@ -181,6 +181,9 @@ const Graph = () => {
                 <text x="256" y="455">-5</text>
                 {/*-3 on y*/}
 
+                <polygon points="250,0 255,5 245, 5" fill="#000720" stroke="#000720"/>
+                <polygon points="500, 250 495,245 495,255" fill="#000720" stroke="#000720"/>
+
                 {points.map((point, index) => (
                     <circle
                         key={index}

@@ -1,42 +1,83 @@
 package lab4.backend;
 
-import jakarta.annotation.PreDestroy;
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lab4.backend.entities.Point;
 import lombok.NoArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
-@ApplicationScoped
 @NoArgsConstructor
-public class DatabaseManager implements Serializable {
+@ApplicationScoped
+//@Stateless
+public class DatabaseManager {
 
-    @PersistenceContext(unitName = "primary")
-    private EntityManager em;
+//    @Serial
+//    private static final long serialVersionUID = 1L;
+    private final static Logger logger =  LoggerFactory.getLogger(DatabaseManager.class);
 
-    @Transactional
-    public void addPoint(Point point){
-        em.persist(point);
+    @PersistenceUnit(unitName = "primary")
+    private EntityManagerFactory emf;
+
+
+
+    public void addPoint(Point point) {
+
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            System.out.println("sex point shas will be added" + point);
+            em.persist(point);
+            tx.commit();
+        } catch (Exception e) {
+            // Логирование ошибки
+            logger.error("Point doesn't add: {}", e.getMessage());
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
-    public List<Point> getPoints() {
-        return em.createQuery("select p from Point p", Point.class).getResultList();
-    }
+//    public void addPoint(Point point){
+//        EntityManager em = emf.createEntityManager();
+//        EntityTransaction tx = em.getTransaction();
+//        try (em) {
+//            tx.begin();
+//            em.persist(point);
+//            tx.commit();
+//        } catch (Exception e) {
+//            if (tx.isActive()) tx.rollback();
+//            throw e;
+//        }
+//    }
 
-    @Transactional
-    public void clearTable(){
-        em.createQuery("delete from Point").executeUpdate();
-    }
+
+//    public void addPoint(Point point){
+//        try (Session session = sessionFactory.openSession()) {
+//            session.beginTransaction();
+//            session.persist(point);
+//            session.getTransaction().commit();
+//        }
+//    }
+
+//    @PreDestroy
+//    public void close() {
+//        emf.close();
+////        sessionFactory.close();
+//    }
+
+//    public List<Point> getPoints() {
+//        return em.createQuery("select p from Point p", Point.class).getResultList();
+//    }
+//
+//    @Transactional
+//    public void clearTable(){
+//        em.createQuery("delete from Point").executeUpdate();
+//    }
 }

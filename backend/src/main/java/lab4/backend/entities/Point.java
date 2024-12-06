@@ -16,12 +16,19 @@ public class Point {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private double x;
+
+    @Column(nullable = false)
     private double y;
+
+    @Column(nullable = false)
     private double r;
+
+    @Column(nullable = false)
     private boolean hit;
 
-    @Column(name = "hit_time")
+    @Column(name = "hit_time", nullable = false)
     private String date;
 
     public Point(double x, double y, double r, boolean hit, String date) {

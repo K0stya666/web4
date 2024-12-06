@@ -25,11 +25,20 @@ dependencies {
   providedCompile "jakarta.platform:jakarta.jakartaee-api:$jakartaVersion"
 
   // database
-//  runtimeOnly "org.postgresql:postgresql:$postgresVersion"
+  implementation 'org.hibernate.orm:hibernate-core:6.2.4.Final'
+  //  runtimeOnly "org.postgresql:postgresql:$postgresVersion"
+//  compileOnly "org.postgresql:postgresql:$postgresVersion"
   implementation "org.postgresql:postgresql:$postgresVersion"
-  implementation "org.hibernate:hibernate-core:$hibernateVersion"
   implementation "jakarta.persistence:jakarta.persistence-api:$persistenceVersion"
-  implementation "at.favre.lib:bcrypt:$favreVersion" // BCrypt for Password Hashing
+
+
+
+
+
+
+//  implementation "org.hibernate:hibernate-core:$hibernateVersion"
+//
+//  implementation "at.favre.lib:bcrypt:$favreVersion" // BCrypt for Password Hashing
 
   // JSON
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
@@ -55,6 +64,7 @@ test {
 
 war {
   archiveFileName = 'lab4.war'
+//  exclude 'org/postgresql/**'
 }
 
 tasks.withType(JavaCompile) {

@@ -1,6 +1,7 @@
 package lab4.backend;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -14,10 +15,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@SessionScoped
 @Path("/areaCheck")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@SessionScoped
 public class AreaCheck implements Serializable {
 
     @Serial
@@ -31,7 +32,7 @@ public class AreaCheck implements Serializable {
     @PostConstruct
     public void init() {
         if (points == null) points = new ArrayList<>();
-        points = db.getPoints();
+//        points = db.getPoints();
     }
 
     @POST
@@ -48,6 +49,11 @@ public class AreaCheck implements Serializable {
         db.addPoint(point);
 
         logger.info("Получены данные: x={}, y={}, r={}, hit={}", data.getX(), data.getY(), data.getR(), hit);
+
+
+
+
+
         return point;
     }
 
@@ -56,7 +62,7 @@ public class AreaCheck implements Serializable {
     public void clear() {
         logger.info("Запрос на очистку точек получен.");
         points.clear();
-        db.clearTable();
+//        db.clearTable();
         logger.info("Коллекция точек успешно очищена.");
     }
 
