@@ -19,6 +19,10 @@ public class DatabaseManager {
     private EntityManager em;
 
 
+    @Transactional
+    public void addUser() {
+
+    }
 
     @Transactional
     public void addPoint(Point point) {
