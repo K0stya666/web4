@@ -1,9 +1,9 @@
 import React from 'react';
-import InputForm from "./InputForm";
+import InputForm from "../forms/InputForm";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
-import PointTable from "./PointTable";
-import Graph from "./Graph";
+import PointTable from "../PointTable";
+import Graph from "../Graph";
 
 const MainPage = () => {
 

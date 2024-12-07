@@ -1,7 +1,7 @@
 import './styles/App.css';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import MainPage from "./components/MainPage";
-import StartPage from "./components/StartPage";
+import MainPage from "./components/pages/MainPage";
+import StartPage from "./components/pages/StartPage";
 
 function App() {
 

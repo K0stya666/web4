@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import axios from "axios";
 import {Autocomplete, Button, Input, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {addPoint, clearPoints, setR} from "../store/store";
+import {addPoint, clearPoints, setR} from "../../store/store";
 
 const xValues = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
 const rValues = ['1', '2', '3', '4', '5'];
@@ -16,8 +16,8 @@ const InputForm = () => {
     const [x, setX] = useState(null);
     const [y, setY] = useState('');
     const r = useSelector((state) => state.r);
-
-    const [points, setPoints] = useState([]);
+    const username = useSelector((state) => state.username);
+    const password = useSelector((state) => state.password);
 
 
 
@@ -38,10 +38,12 @@ const InputForm = () => {
             const data = {
                 x: Number(x),
                 y: Number(y),
-                r: Number(r)
+                r: Number(r),
+                // username: username,
+                // password: password
             };
 
-            axios.post(`${API_URL}`, data)
+            axios.post(`${API_URL}/points`, data)
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
                     console.log("Тип данных response.data:", response.data );

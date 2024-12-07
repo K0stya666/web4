@@ -45,7 +45,7 @@ const Graph = () => {
                 r: r
             }
 
-            axios.post(`${API_URL}`, data)
+            axios.post(`${API_URL}/points`, data)
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
                     console.log("Тип данных response.data:", response.data );
