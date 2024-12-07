@@ -1,12 +1,12 @@
 package lab4.backend;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import lab4.backend.entities.Point;
+import lab4.backend.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.Serial;
@@ -25,6 +25,7 @@ public class AreaCheck implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(AreaCheck.class.getName());
     private List<Point> points;
+    private List<User> users;
 
     @Inject
     private DatabaseManager db;
@@ -32,14 +33,30 @@ public class AreaCheck implements Serializable {
     @PostConstruct
     public void init() {
         if (points == null) points = new ArrayList<>();
+        if (users == null) users = new ArrayList<>();
         points = db.getPoints();
     }
 
+
+
     @POST
-    public Point addPoints(Point data) {
+    @Path("/users")
+    public User addUser(User data) {
+        String username = data.getUsername();
+        String password = data.getPassword();
+
+        var user = new User(username, password);
+        db.addUser(user);
+        return user;
+    }
+
+    @POST
+    @Path("/points")
+    public Point addPoint(Point data) {
         double x = data.getX();
         double y = data.getY();
         double r = data.getR();
+//        String username = data.getUsername();
         boolean hit = checkHit(x, y, r);
         LocalDateTime date = LocalDateTime.now();
         String strdate = date.toString();

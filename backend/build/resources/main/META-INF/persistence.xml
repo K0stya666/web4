@@ -2,6 +2,7 @@
     <persistence-unit name="StudsPU" transaction-type="JTA">
         <!-- Ссылка на JNDI DataSource -->
         <jta-data-source>java:/StudsDS</jta-data-source>
+        <class>lab4.backend.entities.User</class>
         <class>lab4.backend.entities.Point</class>
         <properties>
             <!-- Hibernate настройки -->

@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lab4.backend.entities.Point;
+import lab4.backend.entities.User;
 import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,21 @@ public class DatabaseManager {
 
 
     @Transactional
-    public void addUser() {
+    public void addUser(User user) {
+        em.persist(user);
+    }
 
+    public User findUserByUsername(String username) {
+        try {
+            TypedQuery<User> query = em.createQuery("select u from User u where u.username = :username", User.class);
+            query.setParameter("username", username);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            logger.warn("No user found with username {}", username);
+        } catch (NonUniqueResultException e) {
+            logger.warn("Non-unique user found with username {}", username);
+        }
+        return null;
     }
 
     @Transactional

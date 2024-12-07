@@ -30,6 +30,10 @@ public class Point {
     @Column(name = "hit_time", nullable = false)
     private String date;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user;
+
     public Point(double x, double y, double r, boolean hit, String date) {
         this.x = x;
         this.y = y;
