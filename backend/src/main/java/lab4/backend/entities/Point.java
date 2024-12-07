@@ -38,4 +38,6 @@ public class Point {
         this.hit = hit;
         this.date = date;
     }
+
+//    public Point() {}
 }

@@ -1,6 +1,5 @@
 package lab4.backend;
 
-import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -9,38 +8,27 @@ import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @NoArgsConstructor
 @ApplicationScoped
-//@Stateless
 public class DatabaseManager {
 
-//    @Serial
-//    private static final long serialVersionUID = 1L;
+    //    @Serial
+    //    private static final long serialVersionUID = 1L;
     private final static Logger logger =  LoggerFactory.getLogger(DatabaseManager.class);
 
-    @PersistenceUnit(unitName = "primary")
-    private EntityManagerFactory emf;
+    @PersistenceContext(unitName = "StudsPU")
+    private EntityManager em;
 
 
-
+    @Transactional
     public void addPoint(Point point) {
-
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
             System.out.println("sex point shas will be added" + point);
             em.persist(point);
-            tx.commit();
         } catch (Exception e) {
             // Логирование ошибки
             logger.error("Point doesn't add: {}", e.getMessage());
             throw e;
-        } finally {
-            em.close();
         }
     }
 
