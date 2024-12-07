@@ -32,7 +32,7 @@ public class AreaCheck implements Serializable {
     @PostConstruct
     public void init() {
         if (points == null) points = new ArrayList<>();
-//        points = db.getPoints();
+        points = db.getPoints();
     }
 
     @POST
@@ -49,11 +49,6 @@ public class AreaCheck implements Serializable {
         db.addPoint(point);
 
         logger.info("Получены данные: x={}, y={}, r={}, hit={}", data.getX(), data.getY(), data.getR(), hit);
-
-
-
-
-
         return point;
     }
 
@@ -62,7 +57,7 @@ public class AreaCheck implements Serializable {
     public void clear() {
         logger.info("Запрос на очистку точек получен.");
         points.clear();
-//        db.clearTable();
+        db.clearTable();
         logger.info("Коллекция точек успешно очищена.");
     }
 
