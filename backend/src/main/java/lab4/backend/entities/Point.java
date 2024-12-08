@@ -1,11 +1,12 @@
 package lab4.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @Setter
-@ToString
+//@ToString(exclude = "user")
 @NoArgsConstructor
 @Entity
 @Table(name = "points")
@@ -32,6 +33,7 @@ public class Point {
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "user_id", nullable = false)
+//    @JsonIgnore
 //    private User user;
 
     public Point(double x, double y, double r, boolean hit, String date) {
@@ -40,5 +42,6 @@ public class Point {
         this.r = r;
         this.hit = hit;
         this.date = date;
+//        this.user = user;
     }
 }

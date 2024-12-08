@@ -8,9 +8,10 @@ const CLEAR_POINTS = 'CLEAR_POINTS';
 
 const init = {
     r: 3,
-    username: "unknown",
+    username: "",
     password: "",
-    points: []
+    points: [],
+    api: 'http://localhost:9696/lab4/api/areaCheck'
 }
 
 export const setR = (r) => ({
@@ -45,7 +46,7 @@ const reducer = (state = init, action) => {
         case CLEAR_POINTS: return {...state, points: []};
         case SET_R: return {...state, r: action.payload};
         case SET_USERNAME: return {...state, username: action.payload};
-        case SET_PASSWORD: return {...state, points: action.payload};
+        case SET_PASSWORD: return {...state, password: action.payload};
         default: return state;
     }
 };

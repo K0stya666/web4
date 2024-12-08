@@ -9,7 +9,7 @@ const rValues = ['1', '2', '3', '4', '5'];
 
 const InputForm = () => {
 
-    const API_URL = 'http://localhost:9696/lab4/api/areaCheck';
+    const API_URL = useSelector((state) => state.api);
     const dispatcher = useDispatch();
 
     const [errors, setErrors] = useState({});
@@ -43,9 +43,10 @@ const InputForm = () => {
                 // password: password
             };
 
-            axios.post(`${API_URL}/points`, data)
+            axios.post(`${API_URL}/point`, data)
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
+                    // console.log("Пользователь:", data.username, "Пароль:", data.password)
                     console.log("Тип данных response.data:", response.data );
                     dispatcher(addPoint(response.data));
                 })

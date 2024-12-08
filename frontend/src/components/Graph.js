@@ -4,13 +4,15 @@ import {addPoint} from "../store/store";
 import axios from "axios";
 
 const Graph = () => {
-    const API_URL = 'http://localhost:9696/lab4/api/areaCheck';
+    const API_URL = useSelector((state) => state.api);
     const dispatch = useDispatch();
 
     const scale = 40;
     const radius = useSelector((state) => state.r) * scale;
     const graph = useRef(null);
     const points = useSelector((state) => state.points);
+    const username = useSelector((state) => state.username);
+    const password = useSelector((state) => state.password);
 
     const trPoint1 = {x: 250, y: 250};
     const trPoint2 = {x: 250 + radius, y: 250};
@@ -43,16 +45,20 @@ const Graph = () => {
                 x: x,
                 y: y,
                 r: r
+                // username: username,
+                // password: password
             }
 
-            axios.post(`${API_URL}/points`, data)
+            axios.post(`${API_URL}/point`, data)
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
+                    // console.log("Пользователь:", data.username, "Пароль:", data.password)
                     console.log("Тип данных response.data:", response.data );
                     dispatch(addPoint(response.data));
                 })
                 .catch(error => {
                     console.log("Ошибка при отправке данных:", error);
+                    // console.log("Пользователь:", data.username, "Пароль:", data.password)
                     console.log(error.data);
                 });
 

@@ -25,7 +25,7 @@ public class AreaCheck implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(AreaCheck.class.getName());
     private List<Point> points;
-    private List<User> users;
+    private User user;
 
     @Inject
     private DatabaseManager db;
@@ -33,11 +33,15 @@ public class AreaCheck implements Serializable {
     @PostConstruct
     public void init() {
         if (points == null) points = new ArrayList<>();
-        if (users == null) users = new ArrayList<>();
+//        if (users == null) users = new ArrayList<>();
         points = db.getPoints();
     }
 
-
+    @GET
+    @Path("/points")
+    public List<Point> getPoints() {
+        return points;
+    }
 
     @POST
     @Path("/users")
@@ -45,21 +49,24 @@ public class AreaCheck implements Serializable {
         String username = data.getUsername();
         String password = data.getPassword();
 
-        var user = new User(username, password);
+        user = new User(username, password);
         db.addUser(user);
         return user;
     }
 
     @POST
-    @Path("/points")
+    @Path("/point")
     public Point addPoint(Point data) {
         double x = data.getX();
         double y = data.getY();
         double r = data.getR();
-//        String username = data.getUsername();
         boolean hit = checkHit(x, y, r);
         LocalDateTime date = LocalDateTime.now();
         String strdate = date.toString();
+
+//        String username = data.getUsername();
+//        String password = data.getPassword();
+//        var user = new User(username, password);
 
         var point = new Point(x, y, r, hit, strdate);
         points.add(point);

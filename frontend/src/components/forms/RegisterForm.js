@@ -2,21 +2,27 @@ import React, {useState} from "react";
 import {Button} from "@mui/material";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setPassword, setUsername} from "../../store/store";
 
 
 const RegisterForm = () => {
-
     const API_URL = 'http://localhost:9696/lab4/api/areaCheck';
-    // const dispatch = useDispatch();
-    // const username = useSelector((state) => state.username);
-    // const password = useSelector((state) => state.password);
+
     const navigate = useNavigate();
     const redirect = () => { navigate('/main') };
+
+    // const username = useSelector((state) => state.username);
+    // const password = useSelector((state) => state.password);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    // const dispatch = useDispatch();
 
     const submit = (e) => {
         e.preventDefault();
+
+        // dispatch(setUsername(username));
+        // dispatch(setPassword(password));
 
         const data = {
             username: username,

@@ -1,8 +1,27 @@
-import React from "react";
-import {useSelector} from "react-redux";
+import React, {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import axios from "axios";
+import {addPoint} from "../store/store";
 
 const PointTable = () => {
-    const points = useSelector((state) => state.points)
+
+    const API_URL = useSelector((state) => state.api);
+    const points = useSelector((state) => state.points);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        axios.get(`${API_URL}/points`)
+            .then((response) => {
+                // console.log("Response data:", response.data);
+                response.data.forEach((point) => {
+                    dispatch(addPoint(point));
+                    // console.log("Added point:", point);
+                });
+            })
+            .catch((error) => {
+                console.log("Error:", error);
+            });
+    }, []);
 
     return (
         <div>
