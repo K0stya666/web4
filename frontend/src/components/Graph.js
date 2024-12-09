@@ -59,8 +59,7 @@ const Graph = () => {
             })
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
-                    // console.log("Пользователь:", data.username, "Пароль:", data.password)
-                    console.log("Тип данных response.data:", response.data );
+                    console.log("token:", response.data.token)
                     dispatch(addPoint(response.data));
                 })
                 .catch(error => {

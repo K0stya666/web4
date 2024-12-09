@@ -36,7 +36,7 @@ const RegisterForm = () => {
             const token = response.data.token;
             localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            console.log('Зарегистрировалось');
+            console.log('Зарегистрировалось с token', token);
         }).catch((error) => {
             dispatch(setStatus('REGISTER_FAILED'));
             // dispatch({

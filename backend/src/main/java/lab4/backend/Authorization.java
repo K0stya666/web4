@@ -12,6 +12,8 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lab4.backend.entities.User;
 import lab4.backend.utils.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,6 +24,8 @@ import java.io.Serializable;
 @SessionScoped
 public class Authorization implements Serializable {
 
+    private static final Logger logger = LoggerFactory.getLogger(Authorization.class);
+
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +34,22 @@ public class Authorization implements Serializable {
 
     @Inject
     private DatabaseManager db;
+
+//    @POST
+//    @Path("/register")
+//    public Response register(User user) {
+//        if (isUsernameTaken(user.getUsername())) {
+//            return Response.status(Response.Status.CONFLICT)
+//                    .entity("Username already taken")
+//                    .build();
+//        }
+//
+//        String passwordHash = hashPassword(user.getPassword());
+//        user.setPasswordHash(passwordHash);
+////        String token = jwtUtil.generateToken(user.getUsername());
+//        db.addUser(user);
+//        return Response.status(Response.Status.CREATED).build();
+//    }
 
     @POST
     @Path("/register")
@@ -42,8 +62,12 @@ public class Authorization implements Serializable {
 
         String passwordHash = hashPassword(user.getPassword());
         user.setPasswordHash(passwordHash);
+        String token = jwtUtil.generateToken(user.getUsername());
         db.addUser(user);
-        return Response.status(Response.Status.CREATED).build();
+        logger.info("Пользователю {} выдан token: {}", user.getUsername(), token);
+        return Response.ok()
+                .entity("{\"token\":\"" + token + "\"}")
+                .build();
     }
 
     @POST

@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.SecurityContext;
 import lab4.backend.entities.Point;
 import lab4.backend.entities.User;
+import lab4.backend.utils.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.Serial;
@@ -31,6 +32,8 @@ public class AreaCheck implements Serializable {
 
     @Inject
     private DatabaseManager db;
+    @Inject
+    private JwtUtil jwtUtil;
 
     @PostConstruct
     public void init() {
@@ -62,7 +65,7 @@ public class AreaCheck implements Serializable {
 
     @POST
     @Path("/point")
-    public Point addPoint(Point data, @Context SecurityContext sc) {
+    public Point addPoint(Point data, @HeaderParam("Authorization") String authHeader) {
         double x = data.getX();
         double y = data.getY();
         double r = data.getR();
@@ -70,10 +73,13 @@ public class AreaCheck implements Serializable {
         LocalDateTime date = LocalDateTime.now();
         String strdate = date.toString();
 
+        var username = getUsernameFromToken(authHeader);
+
 //        String username = (String) sc.getUserPrincipal().getName();
+//        logger.info("Пользователь под token: {}", username);
 //        logger.info("Username: {}", username);
 //        var user = db.findUserByUsername(username);
-        var user = db.findUserByUsername("hui");
+        var user = db.findUserByUsername(username);
 
         var point = new Point(x, y, r, hit, strdate, user);
         points.add(point);
@@ -92,7 +98,14 @@ public class AreaCheck implements Serializable {
         logger.info("Коллекция точек успешно очищена.");
     }
 
+
     private boolean checkHit(double x, double y, double r) {
         return true;
+    }
+
+    private String getUsernameFromToken(String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
+        String token = authHeader.substring("Bearer ".length()).trim();
+        return jwtUtil.validateToken(token);
     }
 }
