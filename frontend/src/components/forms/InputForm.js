@@ -1,14 +1,17 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import {Autocomplete, Button, Input, TextField} from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
-import {addPoint, clearPoints, setR} from "../../store/store";
+import { Autocomplete } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { addPoint, clearPoints, setR } from "../../store/store";
+import DemonicCard from "../common/DemonicCard";
+import DemonicInput from "../common/DemonicInput";
+import DemonicButton from "../common/DemonicButton";
+import { Box, Typography } from "@mui/material";
 
 const xValues = ['-5', '-4', '-3', '-2', '-1', '0', '1', '2', '3'];
 const rValues = ['1', '2', '3', '4', '5'];
 
 const InputForm = () => {
-
     const API_URL = useSelector((state) => state.api);
     const dispatcher = useDispatch();
 
@@ -16,10 +19,6 @@ const InputForm = () => {
     const [x, setX] = useState(null);
     const [y, setY] = useState('');
     const r = useSelector((state) => state.r);
-    const username = useSelector((state) => state.username);
-    const password = useSelector((state) => state.password);
-
-
 
     const validate = () => {
         const errors = {}
@@ -34,13 +33,10 @@ const InputForm = () => {
         e.preventDefault();
 
         if (validate()) {
-
             const data = {
                 x: Number(x),
                 y: Number(y),
                 r: Number(r),
-                // username: username,
-                // password: password
             };
 
             axios.post(`${API_URL}/point`, data, {
@@ -50,13 +46,10 @@ const InputForm = () => {
             })
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
-                    // console.log("Пользователь:", data.username, "Пароль:", data.password)
-                    console.log("Тип данных response.data:", response.data );
                     dispatcher(addPoint(response.data));
                 })
                 .catch(error => {
                     console.log("Ошибка при отправке данных:", error);
-                    console.log(error.data);
                 });
         }
     }
@@ -73,86 +66,85 @@ const InputForm = () => {
             })
             .catch(error => {
                 console.error("Ошибка при очистке точек:", error);
-                // alert("Не удалось очистить точки. Попробуйте ещё раз.");
             });
-     }
+    }
 
     return (
-        <div>
-            <form>
+        <DemonicCard sx={{ p: 3, mb: 3 }}>
+            <Typography variant="h5" sx={{ mb: 3 }}>
+                Координаты Точки
+            </Typography>
 
-                <div style={{display: "flex"}}>
-                    <label htmlFor="x">Изменение X:</label>
+            <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                    <Typography>X:</Typography>
                     <Autocomplete
                         renderInput={(params) => (
-                            <TextField
+                            <DemonicInput
                                 {...params}
-                                label="Выбери значение X"
-                                variant="outlined"
+                                label="Выберите X"
                                 error={!!errors.x}
                                 helperText={errors.x}
                             />
                         )}
                         options={xValues}
                         onChange={(event, value) => setX(value)}
-                        style={{
-                            width: "20%",
-                            height: "60px"
-                        }}
+                        sx={{ width: 200 }}
                     />
-                </div>
+                </Box>
 
-                <div>
-                    <label htmlFor="y">Изменение Y:</label>
-                    <Input
+                <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                    <Typography>Y:</Typography>
+                    <DemonicInput
                         type="number"
-                        step="0.1"
+                        label="Введите Y"
                         value={y}
                         onChange={(e) => setY(e.target.value)}
                         error={!!errors.y}
-                        min="-3"
-                        max="3"
-                        placeholder="Введите значение от -3 до 3"
+                        helperText={errors.y}
+                        inputProps={{ step: "0.1", min: "-3", max: "3" }}
+                        sx={{ width: 200 }}
                     />
-                    {errors.y && <p style={{color: "red"}}>{errors.y}</p>}
-                </div>
+                </Box>
 
-                <div style={{display: "flex"}}>
-                    <label htmlFor="r">Изменение R:</label>
+                <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+                    <Typography>R:</Typography>
                     <Autocomplete
                         renderInput={(params) => (
-                            <TextField
+                            <DemonicInput
                                 {...params}
-                                label="Выбери значение R"
-                                variant="outlined"
+                                label="Выберите R"
                                 error={!!errors.r}
                                 helperText={errors.r}
                             />
                         )}
                         options={rValues}
                         onChange={(event, value) => {
-                            // setR(value);
                             dispatcher(setR(Number(value)))
                         }}
-                        style={{
-                            width: "20%",
-                            height: "60px"
-                        }}
+                        sx={{ width: 200 }}
                     />
-                </div>
+                </Box>
 
-                <Button
-                    type="submit"
-                    onClick={submit}
-                >Отправить</Button>
+                <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                    <DemonicButton
+                        onClick={submit}
+                        variant="contained"
+                        fullWidth
+                    >
+                        Отправить
+                    </DemonicButton>
 
-                <Button
-                    type="button"
-                    onClick={clear}
-                >Очистить</Button>
-
-            </form>
-        </div>
+                    <DemonicButton
+                        onClick={clear}
+                        variant="contained"
+                        fullWidth
+                    >
+                        Очистить
+                    </DemonicButton>
+                </Box>
+            </Box>
+        </DemonicCard>
     )
 }
 

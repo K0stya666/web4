@@ -70,4 +70,13 @@ public class DatabaseManager {
     public void clearTable(){
         em.createQuery("delete from Point").executeUpdate();
     }
+    @Transactional
+    public void clearTable(User user){
+        em.createQuery("DELETE FROM Point p WHERE p.user = :user").setParameter("user", user).executeUpdate();
+//        String jpql = "DELETE FROM Point p WHERE p.user = :user";
+//        int deletedCount = em.createQuery(jpql)
+//                .setParameter("user", user)
+//                .executeUpdate();
+//        System.out.println("Количество удалённых точек: " + deletedCount);
+    }
 }

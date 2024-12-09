@@ -1,13 +1,15 @@
 import React from 'react';
+import { useNavigate } from "react-router-dom";
 import InputForm from "../forms/InputForm";
-import {useNavigate} from "react-router-dom";
-import {Button} from "@mui/material";
 import PointTable from "../PointTable";
 import Graph from "../Graph";
+import DemonicContainer from "../layout/DemonicContainer";
+import DemonicButton from "../common/DemonicButton";
+import GlowEffect from "../effects/GlowEffect";
 
 const MainPage = () => {
-
     const navigate = useNavigate();
+
     const logout = () => {
         localStorage.removeItem('token');
         navigate("/");
@@ -15,16 +17,22 @@ const MainPage = () => {
     }
 
     return (
-        <div>
-            <Graph />
-            <InputForm />
-            <Button
-                onClick={logout}
-                variant="contained"
-                color="black"
-            >Log Out</Button>
-            <PointTable />
-        </div>
+        <>
+            <GlowEffect />
+            <DemonicContainer>
+                <Graph />
+                <InputForm />
+                <DemonicButton
+                    onClick={logout}
+                    variant="contained"
+                    fullWidth
+                    sx={{ mb: 3 }}
+                >
+                    Выход из Портала
+                </DemonicButton>
+                <PointTable />
+            </DemonicContainer>
+        </>
     );
 }
 

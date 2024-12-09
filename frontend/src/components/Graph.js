@@ -230,7 +230,7 @@ const Graph = () => {
                         cx={250 + point.x * scale}
                         cy={250 - point.y * scale}
                         r={2.5}
-                        fill={'pink'}
+                        fill={point.hit ? 'green' : 'red'}
                     />
                 ))}
             </svg>

@@ -1,22 +1,28 @@
-import './styles/App.css';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import MainPage from "./components/pages/MainPage";
-import StartPage from "./components/pages/StartPage";
-import RegisterForm from "./components/forms/RegisterForm";
+import React from 'react';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import { theme } from './theme';
+import { GlobalStyles } from './styles/GlobalStyles';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import StartPage from './components/pages/StartPage';
+import MainPage from './components/pages/MainPage';
+import RegisterForm from './components/forms/RegisterForm';
+import GlowEffect from './components/effects/GlowEffect';
 
 function App() {
-
-  return (
-      <Router>
-          <Routes>
-
-              <Route path="/" element={<StartPage/>} />
-              <Route path="/start" element={<StartPage/>} />
-              <Route path="/main" element={<MainPage/>} />
-              <Route path="/register" element={<RegisterForm />} />
-
-          </Routes>
-      </Router>
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <GlobalStyles />
+            <Router>
+                <GlowEffect />
+                <Routes>
+                    <Route path="/" element={<StartPage />} />
+                    <Route path="/main" element={<MainPage />} />
+                    <Route path="/register" element={<RegisterForm />} />
+                </Routes>
+            </Router>
+        </ThemeProvider>
     );
 }
 

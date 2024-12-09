@@ -98,17 +98,33 @@ public class AreaCheck implements Serializable {
 
     @DELETE
     @Path("/clear")
-    public void clear() {
+    public void clear(@HeaderParam("Authorization") String authHeader) {
         logger.info("Запрос на очистку точек получен.");
 //        points.clear();
-        db.clearTable();
+        var username = getUsernameFromToken(authHeader);
+        var user = db.findUserByUsername(username);
+        db.clearTable(user);
         logger.info("Коллекция точек успешно очищена.");
     }
 
 
     private boolean checkHit(double x, double y, double r) {
+        // Первый квадрант: прямоугольник
+        if (x >= 0 && y >= 0 && x <= r && y <= r) {
+            return true;
+        }
+        // Второй квадрант: четверть круга
+        if (x <= 0 && y >= 0 && x * x + y * y <= r * r) {
+            return true;
+        }
+        // Четвертый квадрант: треугольник
+        if (x >= 0 && y <= 0 && (-y <= (r - x) / 2)) {
+            return true;
+        }
+        // Если не попадает ни в одну из областей
         return false;
     }
+
 
     private String getUsernameFromToken(String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;

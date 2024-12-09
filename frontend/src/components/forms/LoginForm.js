@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from "react";
-import {Box, Button, Container, TextField, Typography} from "@mui/material";
-import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import React, { useState } from "react";
+import { Box, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {setStatus} from "../../store/store";
-
+import DemonicContainer from "../layout/DemonicContainer";
+import DemonicInput from "../common/DemonicInput";
+import DemonicButton from "../common/DemonicButton";
+import DemonicCard from "../common/DemonicCard";
 
 const LoginForm = () => {
-
     const API_URL = 'http://localhost:9696/lab4/api/auth';
     const navigate = useNavigate();
 
@@ -33,58 +33,59 @@ const LoginForm = () => {
         }).catch(() => {
             console.log('не зарегистрировалось')
         });
-
     }
 
     return (
-        <Container maxWidth="sm">
+        <DemonicContainer maxWidth="sm">
+            <DemonicCard>
+                <Box sx={{ p: 4 }}>
+                    <Typography variant="h4" sx={{ mb: 4 }}>
+                        Вход в Демонический Портал
+                    </Typography>
 
-            <Box sx={{ mt: 8 }}>
-                <Typography variant="h4">
-                    Вход
-                </Typography>
-            </Box>
+                    <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <DemonicInput
+                            label="Имя"
+                            variant="outlined"
+                            fullWidth
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Enter login"
+                            required
+                        />
 
-            <Box component="form">
-                <TextField
-                    label="Имя"
-                    variant="outlined"
-                    margin="normal"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter login"
-                    required
-                />
+                        <DemonicInput
+                            label="Пароль"
+                            type="password"
+                            fullWidth
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Enter password"
+                            required
+                        />
 
-                <TextField
-                    label="Пароль"
-                    type="password"
-                    margin="normal"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter password"
-                    required
-                />
+                        <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                            <DemonicButton
+                                onClick={navigateToRegister}
+                                variant="contained"
+                                fullWidth
+                            >
+                                Регистрация
+                            </DemonicButton>
 
-                <Button
-                    sx={{ mt: 2 }}
-                    type="submit"
-                    onClick={navigateToRegister}
-                    variant="contained"
-                    color="black"
-                >Регистрация</Button>
-
-                <Button
-                    sx={{ mt: 2 }}
-                    type="submit"
-                    onClick={login}
-                    variant="contained"
-                    color="black"
-                >Войти</Button>
-            </Box>
-
-        </Container>
-
-)}
+                            <DemonicButton
+                                onClick={login}
+                                variant="contained"
+                                fullWidth
+                            >
+                                Войти
+                            </DemonicButton>
+                        </Box>
+                    </Box>
+                </Box>
+            </DemonicCard>
+        </DemonicContainer>
+    )
+}
 
 export default LoginForm;
