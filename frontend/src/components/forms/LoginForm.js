@@ -8,11 +8,33 @@ import {setStatus} from "../../store/store";
 
 const LoginForm = () => {
 
+    const API_URL = 'http://localhost:9696/lab4/api/auth';
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigateToRegister = () => { navigate("/register") }
+
+    const login = async (e) => {
+        e.preventDefault();
+        console.log('Login function called');
+
+        await axios.post(`${API_URL}/login`, {
+            username,
+            password
+        }, {
+            withCredentials: true
+        }).then((response) => {
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            console.log('Зарегистрировалось с token', token);
+            navigate("/main");
+        }).catch(() => {
+            console.log('не зарегистрировалось')
+        });
+
+    }
 
     return (
         <Container maxWidth="sm">
@@ -53,7 +75,9 @@ const LoginForm = () => {
                 >Регистрация</Button>
 
                 <Button
-                    // onClick={}
+                    sx={{ mt: 2 }}
+                    type="submit"
+                    onClick={login}
                     variant="contained"
                     color="black"
                 >Войти</Button>
