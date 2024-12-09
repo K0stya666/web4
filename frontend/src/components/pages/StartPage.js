@@ -2,7 +2,7 @@ import React from 'react';
 import Header from "../Header";
 import {useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
-import RegisterForm from "../forms/RegisterForm";
+import LoginForm from "../forms/LoginForm";
 
 const StartPage = () => {
 
@@ -14,7 +14,7 @@ const StartPage = () => {
     return (
         <div>
             <Header />
-            <RegisterForm />
+            <LoginForm />
             <Button
                 onClick={redirect}
                 variant="contained"
