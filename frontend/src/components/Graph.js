@@ -31,6 +31,8 @@ const Graph = () => {
 
     useEffect(() => {
         const svg = graph.current;
+        // const username = useSelector((state) => state.username);
+        // const password = useSelector((state) => state.password);
         svg.addEventListener('click', (e) => {
             e.preventDefault();
 
@@ -39,17 +41,22 @@ const Graph = () => {
 
             const x = (svgX - 250) / scale;
             const y = (250 - svgY) / scale;
-            const r = radius / scale
+            const r = radius / scale;
 
             const data = {
                 x: x,
                 y: y,
-                r: r
+                r: r,
                 // username: username,
                 // password: password
+                // // user: { username, password }
             }
 
-            axios.post(`${API_URL}/point`, data)
+            axios.post(`${API_URL}/point`, data, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
                     // console.log("Пользователь:", data.username, "Пароль:", data.password)

@@ -1,86 +1,104 @@
 import React, {useState} from "react";
-import {Button} from "@mui/material";
-import axios from "axios";
+import {Alert, Box, Button, Container, TextField, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setPassword, setUsername} from "../../store/store";
-
+import axios from "axios";
+import {setPassword, setStatus, setUsername} from "../../store/store";
 
 const RegisterForm = () => {
-    const API_URL = 'http://localhost:9696/lab4/api/areaCheck';
 
+    const API_URL = 'http://localhost:9696/lab4/api/auth';
     const navigate = useNavigate();
-    const redirect = () => { navigate('/main') };
+    const dispatch = useDispatch();
 
-    // const username = useSelector((state) => state.username);
-    // const password = useSelector((state) => state.password);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // const dispatch = useDispatch();
 
-    const submit = (e) => {
+    // const username = useSelector((state) => state.username)
+
+    const register = async (e) => {
         e.preventDefault();
+        console.log('Register function called');
+        // dispatch(setStatus('REGISTER'));
+        // setName(username);
+        // setPass(password);
 
-        // dispatch(setUsername(username));
-        // dispatch(setPassword(password));
+        await axios.post(`${API_URL}/register`, {
+            username,
+            password
+        }, {
+            withCredentials: true
+        }).then((response) => {
+            // dispatch(setStatus('REGISTER_SUCCESS'));
+            // console.log('Username:', data.username)
+            // dispatch(setUsername(username));
+            // dispatch(setPassword(password));
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            console.log('Зарегистрировалось');
+        }).catch((error) => {
+            dispatch(setStatus('REGISTER_FAILED'));
+            // dispatch({
+            //     type: 'REGISTER_FAILED',
+            //     payload: error.response?.data?.message || 'Register failed'
+            // });
+            console.log('не зарегистрировалось')
+        });
 
-        const data = {
-            username: username,
-            password: password
-        }
-
-        console.log(data.username)
-        console.log(data.password)
-
-        axios.post(`${API_URL}/users`, data)
-            .then((response) => {
-                console.log("hui")
-                redirect();
-            }
-        )
+        navigate("/main");
     }
 
     return (
-        <div>
-            <h2>Регистрация</h2>
+        <Container maxWidth="sm">
 
-            <form id="registrationForm" onSubmit={submit}>
-                <label>Имя пользователя: </label>
-                <input
-                    type="text"
-                    id="username"
+            <Box sx={{ mt: 8 }}>
+                <Typography variant="h4">
+                    Регистрация
+                </Typography>
+                {/*{ auth.error && (*/}
+                {/*    <Alert severity="error" sx={{ mb: 2 }}>{ auth.error }</Alert>*/}
+                {/*)}*/}
+            </Box>
+
+            <Box component="form">
+                <TextField
+                    label="Имя"
+                    variant="outlined"
+                    margin="normal"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Enter login"
                     required
-                    placeholder="Введите имя пользователя"
                 />
 
-                <label>Пароль: </label>
-                <input
+                <TextField
+                    label="Пароль"
                     type="password"
-                    id="password"
+                    margin="normal"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter password"
                     required
-                    placeholder="Введите пароль"
                 />
 
                 <Button
+                    sx={{ mt: 2 }}
                     type="submit"
-                    // onClick={submit}
+                    onClick={register}
                     variant="contained"
                     color="black"
-                >Регистрация</Button>
+                >Зарегистрироваться</Button>
 
                 <Button
                     // onClick={}
                     variant="contained"
                     color="black"
                 >Войти</Button>
-            </form>
+            </Box>
 
-        </div>
-    );
-}
+        </Container>
+
+)}
 
 export default RegisterForm;

@@ -18,6 +18,7 @@ public class ApplicationConfig extends Application {
         classes.add(CORSFilter.class);
         classes.add(SPAFilter.class);
         classes.add(JacksonFeature.class); // Регистрация Jackson
+        classes.add(Authorization.class);
         return classes;
     }
 }

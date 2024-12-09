@@ -43,7 +43,11 @@ const InputForm = () => {
                 // password: password
             };
 
-            axios.post(`${API_URL}/point`, data)
+            axios.post(`${API_URL}/point`, data, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
                 .then(response => {
                     console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
                     // console.log("Пользователь:", data.username, "Пароль:", data.password)
@@ -59,7 +63,11 @@ const InputForm = () => {
 
     const clear = (e) => {
         e.preventDefault();
-        axios.delete(`${API_URL}/clear`)
+        axios.delete(`${API_URL}/clear`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => {
                 dispatcher(clearPoints());
             })

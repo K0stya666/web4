@@ -4,7 +4,9 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.SecurityContext;
 import lab4.backend.entities.Point;
 import lab4.backend.entities.User;
 import org.slf4j.Logger;
@@ -43,20 +45,24 @@ public class AreaCheck implements Serializable {
         return points;
     }
 
-    @POST
-    @Path("/users")
-    public User addUser(User data) {
-        String username = data.getUsername();
-        String password = data.getPassword();
+//    @POST
+//    @Path("/register")
+//    public User addUser(User data) {
+//        String username = data.getUsername();
+//        String password = data.getPassword();
+//
+//        user = new User(username, password);
+//        db.addUser(user);
+//        return user;
+//    }
 
-        user = new User(username, password);
-        db.addUser(user);
-        return user;
-    }
+    @POST
+    @Path("/login")
+    public User loginUser(User data) {return null;}
 
     @POST
     @Path("/point")
-    public Point addPoint(Point data) {
+    public Point addPoint(Point data, @Context SecurityContext sc) {
         double x = data.getX();
         double y = data.getY();
         double r = data.getR();
@@ -64,11 +70,12 @@ public class AreaCheck implements Serializable {
         LocalDateTime date = LocalDateTime.now();
         String strdate = date.toString();
 
-//        String username = data.getUsername();
-//        String password = data.getPassword();
-//        var user = new User(username, password);
+//        String username = (String) sc.getUserPrincipal().getName();
+//        logger.info("Username: {}", username);
+//        var user = db.findUserByUsername(username);
+        var user = db.findUserByUsername("hui");
 
-        var point = new Point(x, y, r, hit, strdate);
+        var point = new Point(x, y, r, hit, strdate, user);
         points.add(point);
         db.addPoint(point);
 

@@ -18,6 +18,7 @@ ext {
   favreVersion = '0.9.0'
   jacksonVersion = '2.15.2'
   persistenceVersion = '3.1.0'
+  bcryptVersion = '0.10.2'
 }
 
 dependencies {
@@ -38,23 +39,8 @@ dependencies {
   runtimeOnly "io.jsonwebtoken:jjwt-impl:0.11.5"
   runtimeOnly "io.jsonwebtoken:jjwt-jackson:0.11.5"
 
-
-
-
-
-
-//  implementation "org.hibernate:hibernate-core:$hibernateVersion"
-//
-//  implementation "at.favre.lib:bcrypt:$favreVersion" // BCrypt for Password Hashing
-
-  // JSON
-//  implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.2'
-//  implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-//  runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-//  runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-//  implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
-//  implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
-//  implementation 'com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:2.15.2'
+  // Hashing
+  implementation "at.favre.lib:bcrypt:$bcryptVersion"
 
   // Логирование
   implementation 'org.slf4j:slf4j-api:1.7.30'
@@ -71,7 +57,6 @@ test {
 
 war {
   archiveFileName = 'lab4.war'
-//  exclude 'org/postgresql/**'
 }
 
 tasks.withType(JavaCompile) {
