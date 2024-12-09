@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {addPoint} from "../store/store";
+import {addPoint, setPoints} from "../store/store";
 import axios from "axios";
 
 const Graph = () => {
@@ -11,6 +11,7 @@ const Graph = () => {
     const radius = useSelector((state) => state.r) * scale;
     const graph = useRef(null);
     const points = useSelector((state) => state.points);
+    const token = localStorage.getItem('token');
     const username = useSelector((state) => state.username);
     const password = useSelector((state) => state.password);
 
@@ -29,7 +30,34 @@ const Graph = () => {
         A ${radius} ${radius} 0 0 0 ${250 - radius} ${250}
     `;
 
+    // const fetchPoints = async () => {
+    //     if (!token) {
+    //         console.warn("Токен отсутствует. Пользователь не авторизован.");
+    //         return;
+    //     }
+    //     try {
+    //         const response = await axios.get(`${API_URL}/areaCheck/points`, {
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`
+    //             }
+    //         });
+    //         dispatch(setPoints(response.data)); // Предполагается, что response.data содержит массив точек
+    //         console.log("Точки загружены:", response.data);
+    //     } catch (error) {
+    //         console.error("Ошибка при загрузке точек:", error.response ? error.response.data : error.message);
+    //     }
+    // };
     useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        }
+        // window.location.reload();
+    }, []);
+
+    useEffect(() => {
+        // fetchPoints().then(r => {});
+
         const svg = graph.current;
         // const username = useSelector((state) => state.username);
         // const password = useSelector((state) => state.password);
@@ -202,7 +230,7 @@ const Graph = () => {
                         cx={250 + point.x * scale}
                         cy={250 - point.y * scale}
                         r={2.5}
-                        fill={'green'}
+                        fill={'pink'}
                     />
                 ))}
             </svg>

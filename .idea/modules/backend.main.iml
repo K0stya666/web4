@@ -17,6 +17,7 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <datasource-mapping>
+          <factory-entry name="StudsPU" value="78d0021b-38c4-4f1d-aa17-d398d54dbbad" />
           <factory-entry name="primary" value="3d040ea2-e35f-4501-b4e3-b939730f1c89" />
         </datasource-mapping>
         <naming-strategy-map />

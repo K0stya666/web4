@@ -8,17 +8,21 @@ import Graph from "../Graph";
 const MainPage = () => {
 
     const navigate = useNavigate();
-    const redirect = () => { navigate("/"); }
+    const logout = () => {
+        localStorage.removeItem('token');
+        navigate("/");
+        window.location.reload();
+    }
 
     return (
         <div>
             <Graph />
             <InputForm />
             <Button
-                onClick={redirect}
+                onClick={logout}
                 variant="contained"
                 color="black"
-            >На главную</Button>
+            >Log Out</Button>
             <PointTable />
         </div>
     );

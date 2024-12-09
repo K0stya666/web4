@@ -10,6 +10,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import lab4.backend.entities.Point;
 import lab4.backend.entities.User;
 import lab4.backend.utils.JwtUtil;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -35,21 +38,8 @@ public class Authorization implements Serializable {
     @Inject
     private DatabaseManager db;
 
-//    @POST
-//    @Path("/register")
-//    public Response register(User user) {
-//        if (isUsernameTaken(user.getUsername())) {
-//            return Response.status(Response.Status.CONFLICT)
-//                    .entity("Username already taken")
-//                    .build();
-//        }
-//
-//        String passwordHash = hashPassword(user.getPassword());
-//        user.setPasswordHash(passwordHash);
-////        String token = jwtUtil.generateToken(user.getUsername());
-//        db.addUser(user);
-//        return Response.status(Response.Status.CREATED).build();
-//    }
+//    private List<Point> points = new ArrayList<>();
+
 
     @POST
     @Path("/register")
@@ -59,6 +49,10 @@ public class Authorization implements Serializable {
                     .entity("Username already taken")
                     .build();
         }
+
+//        List<Point> points = db.getPoints(user);
+//        DatabaseManager.setUser(user);
+//        points = db.getPoints(user);
 
         String passwordHash = hashPassword(user.getPassword());
         user.setPasswordHash(passwordHash);
@@ -79,6 +73,10 @@ public class Authorization implements Serializable {
                     .entity("Username not found")
                     .build();
         }
+
+//        db.setUser(user);
+//        db.setUsername(user.getUsername());
+//        points = db.getPoints(user);
 
         String token = jwtUtil.generateToken(user.getUsername());
         return Response.ok()

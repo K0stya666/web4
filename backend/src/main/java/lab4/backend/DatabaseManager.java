@@ -5,16 +5,23 @@ import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lab4.backend.entities.Point;
 import lab4.backend.entities.User;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.List;
 
+@Getter
+@Setter
 @NoArgsConstructor
 @ApplicationScoped
 public class DatabaseManager {
 
     private final static Logger logger =  LoggerFactory.getLogger(DatabaseManager.class);
+    private String username;
+
+    private User user;
 
     @PersistenceContext(unitName = "StudsPU")
     private EntityManager em;
@@ -49,8 +56,14 @@ public class DatabaseManager {
         }
     }
 
+    public List<Point> getPoints(User user) {
+        return em.createQuery("select p from Point p where p.user = :user", Point.class)
+                .setParameter("user", user).getResultList();
+    }
+
     public List<Point> getPoints() {
-        return em.createQuery("select p from Point p", Point.class).getResultList();
+        return em.createQuery("select p from Point p", Point.class)
+                .getResultList();
     }
 
     @Transactional

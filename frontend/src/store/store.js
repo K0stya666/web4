@@ -3,6 +3,7 @@ import { createStore } from 'redux'
 const SET_USERNAME = 'SET_USERNAME';
 const SET_PASSWORD = 'SET_PASSWORD';
 const SET_R = 'SET_R';
+const SET_POINTS = 'SET_POINTS';
 const ADD_POINT = 'ADD_POINT';
 const CLEAR_POINTS = 'CLEAR_POINTS';
 // const LOGIN = 'LOGIN';
@@ -38,6 +39,11 @@ export const setStatus = (status) => ({
     payload: status
 });
 
+export const setPoints = (points) => ({
+    type: SET_POINTS,
+    payload: points
+});
+
 export const setPassword = (password) => ({
     type: SET_PASSWORD,
     payload: password
@@ -66,6 +72,7 @@ const reducer = (state = init, action) => {
         case SET_R: return {...state, r: action.payload};
         case SET_USERNAME: return {...state, username: action.payload};
         case SET_PASSWORD: return {...state, password: action.payload};
+        case SET_POINTS: return {...state, points: action.payload};
 
         case SET_STATUS: return {...state, status: action.payload};
 
