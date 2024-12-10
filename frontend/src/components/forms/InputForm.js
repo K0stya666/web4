@@ -24,6 +24,7 @@ const InputForm = () => {
         const errors = {}
         if (x === null) errors.x = 'Введите значение X';
         if (isNaN(y) || y.trim === '') errors.y = 'Y не является числом. Попробуйте ещё раз';
+        if (y < -3 || y > 3) errors.y = 'Введите y от -3 до 3'
         if (r === null) errors.r = 'Введите значение R';
         setErrors(errors);
         return Object.keys(errors).length === 0;

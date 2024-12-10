@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -13,26 +13,53 @@ const LoginForm = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        // Clear any existing invalid tokens
+        const token = localStorage.getItem('token');
+        if (token) {
+            axios.get(`${API_URL}/validate`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            }).catch(() => {
+                localStorage.removeItem('token');
+                delete axios.defaults.headers.common['Authorization'];
+            });
+        }
+    }, []);
+
     const navigateToRegister = () => { navigate("/register") }
 
     const login = async (e) => {
         e.preventDefault();
-        console.log('Login function called');
+        setError("");
 
-        await axios.post(`${API_URL}/login`, {
-            username,
-            password
-        }, {
-            withCredentials: true
-        }).then((response) => {
+        try {
+            const response = await axios.post(`${API_URL}/login`, {
+                username,
+                password
+            }, {
+                withCredentials: true
+            });
+
             const token = response.data.token;
             localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            console.log('Зарегистрировалось с token', token);
             navigate("/main");
-        }).catch(() => {
-            console.log('не зарегистрировалось')
-        });
+        } catch (error) {
+            if (error.response) {
+                const errorMessage = error.response.data.error;
+                if (errorMessage === "User not found") {
+                    setError("Пользователь не найден");
+                } else if (errorMessage === "Incorrect password") {
+                    setError("Неверный пароль");
+                } else {
+                    setError("Произошла ошибка при входе");
+                }
+            } else {
+                setError("Ошибка сервера");
+            }
+        }
     }
 
     return (
@@ -40,8 +67,14 @@ const LoginForm = () => {
             <DemonicCard>
                 <Box sx={{ p: 4 }}>
                     <Typography variant="h4" sx={{ mb: 4 }}>
-                        Вход в Демонический Портал
+                        #DEAD
                     </Typography>
+
+                    {error && (
+                        <Typography color="error" sx={{ mb: 2 }}>
+                            {error}
+                        </Typography>
+                    )}
 
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <DemonicInput

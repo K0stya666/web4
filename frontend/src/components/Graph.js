@@ -55,54 +55,41 @@ const Graph = () => {
         // window.location.reload();
     }, []);
 
-    useEffect(() => {
-        // fetchPoints().then(r => {});
+    const handleClick = (e) => {
+        e.preventDefault();
 
         const svg = graph.current;
-        // const username = useSelector((state) => state.username);
-        // const password = useSelector((state) => state.password);
-        svg.addEventListener('click', (e) => {
-            e.preventDefault();
+        const rect = svg.getBoundingClientRect();
+        const svgX = e.clientX - rect.left;
+        const svgY = e.clientY - rect.top;
 
-            const svgX = e.offsetX;
-            const svgY = e.offsetY;
+        const x = (svgX - 250) / scale;
+        const y = (250 - svgY) / scale;
+        const currentR = radius / scale; // Используем актуальное значение r
 
-            const x = (svgX - 250) / scale;
-            const y = (250 - svgY) / scale;
-            const r = radius / scale;
+        const data = {
+            x: x,
+            y: y,
+            r: currentR,
+        };
 
-            const data = {
-                x: x,
-                y: y,
-                r: r,
-                // username: username,
-                // password: password
-                // // user: { username, password }
+        axios.post(`${API_URL}/point`, data, {
+            headers: {
+                'Authorization': `Bearer ${token}`
             }
-
-            axios.post(`${API_URL}/point`, data, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            })
-                .then(response => {
-                    console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
-                    console.log("token:", response.data.token)
-                    dispatch(addPoint(response.data));
-                })
-                .catch(error => {
-                    console.log("Ошибка при отправке данных:", error);
-                    // console.log("Пользователь:", data.username, "Пароль:", data.password)
-                    console.log(error.data);
-                });
-
-            // dispatch(addPoint({x, y, r}))
         })
-    }, []);
+            .then(response => {
+                console.log("Данные были отправлены:", data.x, data.y, data.r, response.data.hit);
+                dispatch(addPoint(response.data));
+            })
+            .catch(error => {
+                console.log("Ошибка при отправке данных:", error);
+            });
+    };
 
     return (
         <div>
-            <svg id="graph" ref={graph} xmlns="http://www.w3.org/2000/svg" width="500" height="500">
+            <svg id="graph" ref={graph} xmlns="http://www.w3.org/2000/svg" width="500" height="500" onClick={handleClick} >
 
                 <rect
                     x={250}

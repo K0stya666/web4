@@ -42,7 +42,8 @@ const Header = () => {
             >
                 <Typography sx={{ fontSize: '0.666rem' }}>ФИО: Елисеев Константин Иванович</Typography>
                 <Typography sx={{ fontSize: '0.666rem' }}>Группа: P3208</Typography>
-                <Typography sx={{ fontSize: '0.666rem' }}>Вариант: 456752</Typography>
+                <Typography sx={{ fontSize: '0.666rem' }}>Вариант: 7898</Typography>
+                <Typography sx={{ fontSize: '0.666rem' }}>©sponsored by IWD production</Typography>
             </Paper>
         </Box>
     );

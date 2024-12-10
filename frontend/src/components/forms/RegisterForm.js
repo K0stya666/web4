@@ -13,29 +13,40 @@ const RegisterForm = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
+    const [error, setError] = useState("");
 
     const register = async (e) => {
         e.preventDefault();
-        console.log('Register function called');
+        setError("");
 
-        if (password === confirm) {
-            await axios.post(`${API_URL}/register`, {
+        if (password.length < 6) {
+            setError("Пароль должен содержать минимум 6 символов");
+            return;
+        }
+
+        if (password !== confirm) {
+            setError("Пароли не совпадают");
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${API_URL}/register`, {
                 username,
                 password
             }, {
                 withCredentials: true
-            }).then((response) => {
-                const token = response.data.token;
-                localStorage.setItem('token', token);
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-                console.log('Зарегистрировалось с token', token);
-            }).catch(() => {
-                console.log('не зарегистрировалось')
             });
 
+            const token = response.data.token;
+            localStorage.setItem('token', token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             navigate("/main");
-        } else {
-            alert("Пароль не такой же")
+        } catch (error) {
+            if (error.response && error.response.data.error === "Username already taken") {
+                setError("Пользователь с таким именем уже существует");
+            } else {
+                setError("Ошибка при регистрации");
+            }
         }
     }
 
@@ -48,6 +59,12 @@ const RegisterForm = () => {
                     <Typography variant="h4" sx={{ mb: 4 }}>
                         Регистрация Души
                     </Typography>
+
+                    {error && (
+                        <Typography color="error" sx={{ mb: 2 }}>
+                            {error}
+                        </Typography>
+                    )}
 
                     <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <DemonicInput
@@ -86,7 +103,7 @@ const RegisterForm = () => {
                                 variant="contained"
                                 fullWidth
                             >
-                                Зарегистрироваться
+                                Pass away (Зарегистрироваться)
                             </DemonicButton>
 
                             <DemonicButton
