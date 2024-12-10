@@ -30,23 +30,6 @@ const Graph = () => {
         A ${radius} ${radius} 0 0 0 ${250 - radius} ${250}
     `;
 
-    // const fetchPoints = async () => {
-    //     if (!token) {
-    //         console.warn("Токен отсутствует. Пользователь не авторизован.");
-    //         return;
-    //     }
-    //     try {
-    //         const response = await axios.get(`${API_URL}/areaCheck/points`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         });
-    //         dispatch(setPoints(response.data)); // Предполагается, что response.data содержит массив точек
-    //         console.log("Точки загружены:", response.data);
-    //     } catch (error) {
-    //         console.error("Ошибка при загрузке точек:", error.response ? error.response.data : error.message);
-    //     }
-    // };
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {

@@ -15,7 +15,7 @@ const CLEAR_POINTS = 'CLEAR_POINTS';
 const SET_STATUS = 'STATUS';
 
 const init = {
-    r: 3,
+    r: '',
     // username: "",
     // password: "",
     points: [],

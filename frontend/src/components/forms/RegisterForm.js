@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,19 @@ const RegisterForm = () => {
     const [password, setPassword] = useState("");
     const [confirm, setConfirm] = useState("");
     const [error, setError] = useState("");
+
+    // useEffect(() => {
+    //     // Проверяем, установлен ли флаг для навигации
+    //     const shouldNavigate = localStorage.getItem('navigateAfterReload');
+    //
+    //     if (shouldNavigate === 'true') {
+    //         // Сбрасываем флаг
+    //         localStorage.removeItem('navigateAfterReload');
+    //
+    //         // Переходим на маршрут /main
+    //         navigate('/main');
+    //     }
+    // }, [navigate]);
 
     const register = async (e) => {
         e.preventDefault();
@@ -40,7 +53,10 @@ const RegisterForm = () => {
             const token = response.data.token;
             localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            localStorage.setItem('navigateAfterReload', 'true');
+
             navigate("/main");
+            window.location.reload();
         } catch (error) {
             if (error.response && error.response.data.error === "Username already taken") {
                 setError("Пользователь с таким именем уже существует");

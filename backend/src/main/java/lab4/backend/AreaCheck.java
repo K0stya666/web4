@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,12 +84,18 @@ public class AreaCheck implements Serializable {
         double r = data.getR();
         boolean hit = checkHit(x, y, r);
         LocalDateTime date = LocalDateTime.now();
+
         String strdate = date.toString();
+        LocalDateTime dateTime = LocalDateTime.parse(strdate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        // Определение желаемого формата вывода
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm:ss");
+
 
         var username = getUsernameFromToken(authHeader);
         var user = db.findUserByUsername(username);
 
-        var point = new Point(x, y, r, hit, strdate, user);
+        var point = new Point(x, y, r, hit, dateTime.format(formatter), user);
 //        points.add(point);
         db.addPoint(point);
 

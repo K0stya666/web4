@@ -46,6 +46,8 @@ const LoginForm = () => {
             localStorage.setItem('token', token);
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             navigate("/main");
+            window.location.reload();
+
         } catch (error) {
             if (error.response) {
                 const errorMessage = error.response.data.error;
